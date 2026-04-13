@@ -5,6 +5,7 @@
     seller: "Loja do Jair",
     owner: "Ana Souza",
     classification: "Fraude",
+    amount: "R$ 1.560,00",
     brand: "Visa",
     arn: "84011234567890123456789",
     disputeStatus: "Em análise",
@@ -18,6 +19,7 @@
     seller: "Casa Aurora",
     owner: "Carlos Lima",
     classification: "Desacordo",
+    amount: "R$ 840,00",
     brand: "Mastercard",
     arn: "84011234567890123456790",
     disputeStatus: "Documentação pendente",
@@ -31,6 +33,7 @@
     seller: "Tech Center",
     owner: "Marina Costa",
     classification: "Erro de processamento",
+    amount: "R$ 2.340,00",
     brand: "Elo",
     arn: "84011234567890123456791",
     disputeStatus: "Reaberta",
@@ -44,6 +47,7 @@
     seller: "Mercado Três Irmãos",
     owner: "Carlos Lima",
     classification: "Fraude",
+    amount: "R$ 620,00",
     brand: "American Express",
     arn: "84011234567890123456792",
     disputeStatus: "Escalada",
@@ -57,6 +61,7 @@
     seller: "Boutique Solar",
     owner: "Ana Souza",
     classification: "Desacordo",
+    amount: "R$ 1.180,00",
     brand: "Hipercard",
     arn: "84011234567890123456793",
     disputeStatus: "Em análise",
@@ -206,7 +211,7 @@ function renderTable(items) {
   if (!items.length) {
     resultsBody.innerHTML = `
       <tr>
-        <td colspan="5">
+        <td colspan="6">
           <div class="empty-state">Nenhum chargeback encontrado para os filtros informados.</div>
         </td>
       </tr>
@@ -224,6 +229,7 @@ function renderTable(items) {
       <td><a class="transaction-link" href="detalhes.html?id=${encodeURIComponent(item.code)}">${item.code}</a></td>
       <td>${item.seller}</td>
       <td>${item.classification}</td>
+      <td>${item.amount}</td>
       <td><span class="pill ${pillClass}">${item.pendingAction}</span></td>
     `;
 
