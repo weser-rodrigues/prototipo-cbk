@@ -29,6 +29,27 @@
         </div>
 
         <form id="filtersForm" class="filters-grid">
+          <div class="field field-date-range">
+            <span>Período</span>
+            <div class="date-range-group">
+              <input type="date" id="startDate" name="startDate" aria-label="Data inicial">
+              <input type="date" id="endDate" name="endDate" aria-label="Data final">
+            </div>
+          </div>
+
+          <div class="field field-multiselect">
+            <span>Tipo de data</span>
+            <div class="multiselect" data-name="dateType" data-placeholder="Data da transação">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Data da transação</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="transactionDate" checked> <span>Data da transação</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="chargebackDate"> <span>Data do chargeback</span></label>
+              </div>
+            </div>
+          </div>
+
           <label class="field">
             <span>Código da transação</span>
             <input type="text" id="transactionCode" name="transactionCode" placeholder="Ex: 12345">
@@ -83,6 +104,20 @@
             </div>
           </div>
 
+          <div class="field field-multiselect">
+            <span>Tipo da transação</span>
+            <div class="multiselect" data-name="transactionType" data-placeholder="Selecione um ou mais tipos">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione um ou mais tipos</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Web"> <span>Web</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="APP"> <span>APP</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Mobile"> <span>Mobile</span></label>
+              </div>
+            </div>
+          </div>
+
           <label class="field">
             <span>ARN</span>
             <input type="text" id="arn" name="arn" placeholder="Ex: 84011234567890123456789">
@@ -109,6 +144,20 @@
                 <label class="multiselect-option"><input type="checkbox" value="Em 5 dias"> <span>Em 5 dias</span></label>
                 <label class="multiselect-option"><input type="checkbox" value="Em 10 dias"> <span>Em 10 dias</span></label>
                 <label class="multiselect-option"><input type="checkbox" value="Acima de 10 dias"> <span>Acima de 10 dias</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field field-multiselect">
+            <span>Parceiro</span>
+            <div class="multiselect" data-name="partner" data-placeholder="Selecione um ou mais parceiros">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione um ou mais parceiros</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Todos"> <span>Todos</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Clear"> <span>Clear</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Unico"> <span>Unico</span></label>
               </div>
             </div>
           </div>

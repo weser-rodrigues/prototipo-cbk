@@ -1,11 +1,14 @@
 ﻿const chargebacks = [
   {
     date: "10/01/2026",
+    chargebackDate: "14/01/2026",
     code: "12345",
     seller: "Loja do Jair",
     owner: "Ana Souza",
     classification: "Fraude",
     amount: "R$ 1.560,00",
+    transactionType: "Web",
+    partner: "Clear",
     brand: "Visa",
     arn: "84011234567890123456789",
     disputeStatus: "Em análise",
@@ -15,11 +18,14 @@
   },
   {
     date: "14/01/2026",
+    chargebackDate: "18/01/2026",
     code: "12346",
     seller: "Casa Aurora",
     owner: "Carlos Lima",
     classification: "Desacordo",
     amount: "R$ 840,00",
+    transactionType: "APP",
+    partner: "Todos",
     brand: "Mastercard",
     arn: "84011234567890123456790",
     disputeStatus: "Documentação pendente",
@@ -29,11 +35,14 @@
   },
   {
     date: "17/01/2026",
+    chargebackDate: "20/01/2026",
     code: "12347",
     seller: "Tech Center",
     owner: "Marina Costa",
     classification: "Erro de processamento",
     amount: "R$ 2.340,00",
+    transactionType: "Mobile",
+    partner: "Unico",
     brand: "Elo",
     arn: "84011234567890123456791",
     disputeStatus: "Reaberta",
@@ -43,11 +52,14 @@
   },
   {
     date: "21/01/2026",
+    chargebackDate: "24/01/2026",
     code: "12348",
     seller: "Mercado Três Irmãos",
     owner: "Carlos Lima",
     classification: "Fraude",
     amount: "R$ 620,00",
+    transactionType: "Web",
+    partner: "Clear",
     brand: "American Express",
     arn: "84011234567890123456792",
     disputeStatus: "Escalada",
@@ -57,11 +69,14 @@
   },
   {
     date: "25/01/2026",
+    chargebackDate: "28/01/2026",
     code: "12349",
     seller: "Boutique Solar",
     owner: "Ana Souza",
     classification: "Desacordo",
     amount: "R$ 1.180,00",
+    transactionType: "APP",
+    partner: "Todos",
     brand: "Hipercard",
     arn: "84011234567890123456793",
     disputeStatus: "Em análise",
@@ -243,6 +258,35 @@ function matchesText(value, filterValue) {
   return value.toLowerCase().includes(filterValue.toLowerCase());
 }
 
+function parseBrazilianDate(value) {
+  const [day, month, year] = value.split("/");
+  return new Date(`${year}-${month}-${day}T00:00:00`);
+}
+
+function isDateInRange(dateValue, startDate, endDate) {
+  if (!startDate && !endDate) {
+    return true;
+  }
+
+  const current = parseBrazilianDate(dateValue);
+
+  if (startDate) {
+    const start = new Date(`${startDate}T00:00:00`);
+    if (current < start) {
+      return false;
+    }
+  }
+
+  if (endDate) {
+    const end = new Date(`${endDate}T23:59:59`);
+    if (current > end) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function getSelectedValues(selectName) {
   if (!filtersForm) {
     return [];
@@ -267,29 +311,41 @@ function setupFilters() {
 
     const formData = new FormData(filtersForm);
     const filters = {
+      startDate: formData.get("startDate").trim(),
+      endDate: formData.get("endDate").trim(),
+      dateType: getSelectedValues("dateType"),
       transactionCode: formData.get("transactionCode").trim(),
       classification: getSelectedValues("classification"),
       seller: formData.get("seller").trim(),
       owner: getSelectedValues("owner"),
       brand: getSelectedValues("brand"),
+      transactionType: getSelectedValues("transactionType"),
       arn: formData.get("arn").trim(),
       disputeStatus: formData.get("disputeStatus").trim(),
       chargebackStatus: formData.get("chargebackStatus").trim(),
-      dueDateRange: getSelectedValues("dueDateRange")
+      dueDateRange: getSelectedValues("dueDateRange"),
+      partner: getSelectedValues("partner")
     };
 
     const filteredItems = chargebacks.filter((item) => {
+      const selectedDateTypes = filters.dateType.length ? filters.dateType : ["transactionDate"];
+      const dateMatch = selectedDateTypes.some((dateType) => {
+        const referenceDate = dateType === "chargebackDate" ? item.chargebackDate : item.date;
+        return isDateInRange(referenceDate, filters.startDate, filters.endDate);
+      });
       const codeMatch = !filters.transactionCode || matchesText(item.code, filters.transactionCode);
       const classMatch = matchesMultiValue(item.classification, filters.classification);
       const sellerMatch = !filters.seller || matchesText(item.seller, filters.seller);
       const ownerMatch = matchesMultiValue(item.owner, filters.owner);
       const brandMatch = matchesMultiValue(item.brand, filters.brand);
+      const transactionTypeMatch = matchesMultiValue(item.transactionType, filters.transactionType);
       const arnMatch = !filters.arn || matchesText(item.arn, filters.arn);
       const disputeMatch = !filters.disputeStatus || matchesText(item.disputeStatus, filters.disputeStatus);
       const chargebackMatch = !filters.chargebackStatus || matchesText(item.chargebackStatus, filters.chargebackStatus);
       const dueMatch = matchesMultiValue(item.dueCategory, filters.dueDateRange);
+      const partnerMatch = matchesMultiValue(item.partner, filters.partner);
 
-      return codeMatch && classMatch && sellerMatch && ownerMatch && brandMatch && arnMatch && disputeMatch && chargebackMatch && dueMatch;
+      return dateMatch && codeMatch && classMatch && sellerMatch && ownerMatch && brandMatch && transactionTypeMatch && arnMatch && disputeMatch && chargebackMatch && dueMatch && partnerMatch;
     });
 
     console.log("Filtros aplicados:", filters);
@@ -324,6 +380,7 @@ function setupMultiselects() {
   multiselects.forEach((multiselect) => {
     const trigger = multiselect.querySelector(".multiselect-trigger");
     const menu = multiselect.querySelector(".multiselect-menu");
+    const isSingleSelect = multiselect.dataset.name === "dateType";
 
     updateLabel(multiselect);
 
@@ -341,6 +398,14 @@ function setupMultiselects() {
 
     multiselect.querySelectorAll('input[type="checkbox"]').forEach((input) => {
       input.addEventListener("change", () => {
+        if (isSingleSelect && input.checked) {
+          multiselect.querySelectorAll('input[type="checkbox"]').forEach((otherInput) => {
+            if (otherInput !== input) {
+              otherInput.checked = false;
+            }
+          });
+        }
+
         updateLabel(multiselect);
       });
     });
