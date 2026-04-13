@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Chargeback</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell detail-layout">
+    <header class="page-header detail-header">
+      <div>
+        <p class="eyebrow">Central de análise</p>
+        <h1 id="detailTitle">Detalhes do Chargeback</h1>
+      </div>
+      <a class="back-link secondary-link" href="index.html">Voltar</a>
+    </header>
+
+    <main class="detail-content">
+      <section class="card detail-summary-card">
+        <div class="summary-topbar">
+          <div class="section-heading">
+            <h2>Resumo da transação e autorização</h2>
+          </div>
+          <div class="summary-highlight">
+            <span>Responsável</span>
+            <strong id="summaryOwner">-</strong>
+          </div>
+        </div>
+
+        <div class="summary-columns">
+          <div>
+            <div class="section-heading section-heading-compact">
+              <h3>Dados da transação</h3>
+            </div>
+            <div class="detail-grid summary-grid" id="transactionSummary"></div>
+          </div>
+
+          <div>
+            <div class="section-heading section-heading-compact">
+              <h3>Dados da autorização</h3>
+            </div>
+            <div class="detail-grid summary-grid" id="authorizationSummary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card tabs-card">
+        <div class="tabs-nav" role="tablist" aria-label="Navegação de detalhes">
+          <button class="tab-button is-active" type="button" role="tab" aria-selected="true" data-tab="chargeback">Chargeback</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" data-tab="contestacao">Contestação</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" data-tab="historico">Histórico</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" data-tab="voucher">Voucher</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" data-tab="observacao">Observação</button>
+        </div>
+
+        <div class="tabs-panels">
+          <section class="tab-panel is-active" id="tab-chargeback" role="tabpanel">
+            <div class="section-heading">
+              <h2>Parcelas e ações</h2>
+            </div>
+            <div class="installments-list" id="installmentsList"></div>
+          </section>
+
+          <section class="tab-panel" id="tab-contestacao" role="tabpanel" hidden>
+            <div class="section-heading">
+              <h2>Contestação</h2>
+            </div>
+
+            <div class="contestation-stack">
+              <section class="contestation-card">
+                <div class="section-heading section-heading-compact">
+                  <h3>Estabelecimento</h3>
+                </div>
+                <div class="detail-grid summary-grid" id="merchantSummary"></div>
+                <div class="contestation-actions">
+                  <button class="primary-button action-button" type="button">Aprovar</button>
+                  <button class="action-button action-button-secondary" type="button">Negar</button>
+                  <button class="action-button action-button-secondary" type="button">Reapresentar</button>
+                  <button class="action-button action-button-secondary" type="button">Pedir mais informações</button>
+                </div>
+              </section>
+
+              <div class="contestation-columns">
+                <section class="contestation-card">
+                  <div class="section-heading section-heading-compact">
+                    <h3>Status da contestação</h3>
+                  </div>
+                  <div class="contestation-status-box">
+                    <span>Status atual</span>
+                    <strong id="currentContestationStatus">-</strong>
+                  </div>
+                  <div class="section-heading section-heading-compact">
+                    <h3>Ciclo de vida</h3>
+                  </div>
+                  <div class="table-wrapper compact-table">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Data</th>
+                          <th>Status</th>
+                          <th>Usuário</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contestationLifecycleBody"></tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section class="contestation-card">
+                  <div class="section-heading section-heading-compact">
+                    <h3>Comunicação com o vendedor</h3>
+                  </div>
+
+                  <div class="communication-block">
+                    <h4>Notificação enviada</h4>
+                    <div class="communication-meta" id="notificationMeta"></div>
+                    <div class="communication-text" id="notificationText"></div>
+                  </div>
+
+                  <div class="communication-block">
+                    <h4>Retorno do vendedor</h4>
+                    <div class="communication-meta" id="sellerReplyMeta"></div>
+                    <div class="communication-text" id="sellerReplyText"></div>
+                    <div class="attachment-chip" id="sellerReplyAttachment"></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-historico" role="tabpanel" hidden>
+            <div class="section-heading">
+              <h2>Histórico</h2>
+            </div>
+            <div class="contestation-card">
+              <div class="table-wrapper compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Ação</th>
+                      <th>Usuário</th>
+                    </tr>
+                  </thead>
+                  <tbody id="generalHistoryBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-voucher" role="tabpanel" hidden>
+            <div class="placeholder-panel">
+              <h2>Voucher</h2>
+              <p>Em construção.</p>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-observacao" role="tabpanel" hidden>
+            <div class="section-heading">
+              <h2>Observação</h2>
+            </div>
+            <div class="contestation-card">
+              <label class="field" for="caseNotes">
+                <span>Anotações</span>
+                <textarea id="caseNotes" class="notes-textarea" rows="5" placeholder="Registre observações importantes sobre o caso."></textarea>
+              </label>
+              <div class="notes-actions">
+                <button class="primary-button" type="button">Salvar</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

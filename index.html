@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Chargebacks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Painel Operacional</p>
+        <h1>Gestão de Chargebacks</h1>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        18 casos ativos
+      </div>
+    </header>
+
+    <main>
+      <section class="card filters-card">
+        <div class="section-heading">
+          <h2>Filtros</h2>
+        </div>
+
+        <form id="filtersForm" class="filters-grid">
+          <label class="field">
+            <span>Código da transação</span>
+            <input type="text" id="transactionCode" name="transactionCode" placeholder="Ex: 12345">
+          </label>
+
+          <div class="field field-multiselect">
+            <span>Classificação</span>
+            <div class="multiselect" data-name="classification" data-placeholder="Selecione uma ou mais classificações">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione uma ou mais classificações</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Desacordo"> <span>Desacordo</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Fraude"> <span>Fraude</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Erro de processamento"> <span>Erro de processamento</span></label>
+              </div>
+            </div>
+          </div>
+
+          <label class="field">
+            <span>Vendedor</span>
+            <input type="text" id="seller" name="seller" placeholder="Nome do vendedor">
+          </label>
+
+          <div class="field field-multiselect">
+            <span>Responsável</span>
+            <div class="multiselect" data-name="owner" data-placeholder="Selecione um ou mais responsáveis">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione um ou mais responsáveis</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Ana Souza"> <span>Ana Souza</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Carlos Lima"> <span>Carlos Lima</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Marina Costa"> <span>Marina Costa</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field field-multiselect">
+            <span>Bandeira</span>
+            <div class="multiselect" data-name="brand" data-placeholder="Selecione uma ou mais bandeiras">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione uma ou mais bandeiras</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Visa"> <span>Visa</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Mastercard"> <span>Mastercard</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Elo"> <span>Elo</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="American Express"> <span>American Express</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Hipercard"> <span>Hipercard</span></label>
+              </div>
+            </div>
+          </div>
+
+          <label class="field">
+            <span>ARN</span>
+            <input type="text" id="arn" name="arn" placeholder="Ex: 84011234567890123456789">
+          </label>
+
+          <label class="field">
+            <span>Status da contestação</span>
+            <input type="text" id="disputeStatus" name="disputeStatus" placeholder="Ex: Em análise">
+          </label>
+
+          <label class="field">
+            <span>Status do chargeback</span>
+            <input type="text" id="chargebackStatus" name="chargebackStatus" placeholder="Ex: Aberto">
+          </label>
+
+          <div class="field field-multiselect">
+            <span>Vencimento</span>
+            <div class="multiselect" data-name="dueDateRange" data-placeholder="Selecione uma ou mais faixas">
+              <button class="multiselect-trigger" type="button" aria-expanded="false">
+                <span class="multiselect-label">Selecione uma ou mais faixas</span>
+              </button>
+              <div class="multiselect-menu" hidden>
+                <label class="multiselect-option"><input type="checkbox" value="Hoje"> <span>Hoje</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Em 5 dias"> <span>Em 5 dias</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Em 10 dias"> <span>Em 10 dias</span></label>
+                <label class="multiselect-option"><input type="checkbox" value="Acima de 10 dias"> <span>Acima de 10 dias</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field action-field">
+            <span class="hidden-label">Ação</span>
+            <button type="submit" class="primary-button">Filtrar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card table-card">
+        <div class="section-heading">
+          <h2>Listagem de chargebacks</h2>
+          <p id="resultsSummary">5 registros encontrados.</p>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Data da transação</th>
+                <th>Código da transação</th>
+                <th>Nome do vendedor</th>
+                <th>Classificação</th>
+                <th>Ação pendente</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
