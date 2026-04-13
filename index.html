@@ -31,22 +31,19 @@
         <form id="filtersForm" class="filters-grid">
           <div class="field field-date-range">
             <span>Período</span>
+            <div class="date-type-group" role="radiogroup" aria-label="Tipo de data">
+              <label class="date-type-option">
+                <input type="radio" name="dateType" value="transactionDate" checked>
+                <span>Data da transação</span>
+              </label>
+              <label class="date-type-option">
+                <input type="radio" name="dateType" value="chargebackDate">
+                <span>Data do chargeback</span>
+              </label>
+            </div>
             <div class="date-range-group">
               <input type="date" id="startDate" name="startDate" aria-label="Data inicial">
               <input type="date" id="endDate" name="endDate" aria-label="Data final">
-            </div>
-          </div>
-
-          <div class="field field-multiselect">
-            <span>Tipo de data</span>
-            <div class="multiselect" data-name="dateType" data-placeholder="Data da transação">
-              <button class="multiselect-trigger" type="button" aria-expanded="false">
-                <span class="multiselect-label">Data da transação</span>
-              </button>
-              <div class="multiselect-menu" hidden>
-                <label class="multiselect-option"><input type="checkbox" value="transactionDate" checked> <span>Data da transação</span></label>
-                <label class="multiselect-option"><input type="checkbox" value="chargebackDate"> <span>Data do chargeback</span></label>
-              </div>
             </div>
           </div>
 

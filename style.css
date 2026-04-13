@@ -124,7 +124,7 @@ h3 {
 
 .card {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid rgba(219, 228, 240, 0.92);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.86);
@@ -177,6 +177,33 @@ h3 {
   grid-column: span 2;
 }
 
+.date-type-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.date-type-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d8e5f3;
+  border-radius: 999px;
+  background: #f8fbff;
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.date-type-option input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
 .date-range-group {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -186,7 +213,8 @@ h3 {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  /*gap: 6px;*/
+  justify-content: flex-end; /* 🔥 garante alinhamento */
 }
 
 .field span {
@@ -638,6 +666,7 @@ select[multiple] option {
 
 .multiselect {
   position: relative;
+  z-index: 1;
 }
 
 .multiselect-trigger {
@@ -867,3 +896,23 @@ select[multiple] option {
   }
 }
 
+
+
+/* Fix dropdown overlap */
+.multiselect {
+  position: relative;
+  z-index: 30;
+}
+
+.multiselect-menu {
+  z-index: 999;
+}
+
+.multiselect.is-open {
+  z-index: 1000; /* 🔥 sobe só quando está aberto */
+}
+
+.filters-card {
+  position: relative;
+  z-index: 10;
+}

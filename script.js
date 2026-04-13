@@ -313,7 +313,7 @@ function setupFilters() {
     const filters = {
       startDate: formData.get("startDate").trim(),
       endDate: formData.get("endDate").trim(),
-      dateType: getSelectedValues("dateType"),
+      dateType: formData.get("dateType"),
       transactionCode: formData.get("transactionCode").trim(),
       classification: getSelectedValues("classification"),
       seller: formData.get("seller").trim(),
@@ -328,11 +328,8 @@ function setupFilters() {
     };
 
     const filteredItems = chargebacks.filter((item) => {
-      const selectedDateTypes = filters.dateType.length ? filters.dateType : ["transactionDate"];
-      const dateMatch = selectedDateTypes.some((dateType) => {
-        const referenceDate = dateType === "chargebackDate" ? item.chargebackDate : item.date;
-        return isDateInRange(referenceDate, filters.startDate, filters.endDate);
-      });
+      const referenceDate = filters.dateType === "chargebackDate" ? item.chargebackDate : item.date;
+      const dateMatch = isDateInRange(referenceDate, filters.startDate, filters.endDate);
       const codeMatch = !filters.transactionCode || matchesText(item.code, filters.transactionCode);
       const classMatch = matchesMultiValue(item.classification, filters.classification);
       const sellerMatch = !filters.seller || matchesText(item.seller, filters.seller);
@@ -380,8 +377,6 @@ function setupMultiselects() {
   multiselects.forEach((multiselect) => {
     const trigger = multiselect.querySelector(".multiselect-trigger");
     const menu = multiselect.querySelector(".multiselect-menu");
-    const isSingleSelect = multiselect.dataset.name === "dateType";
-
     updateLabel(multiselect);
 
     trigger.addEventListener("click", () => {
@@ -398,14 +393,6 @@ function setupMultiselects() {
 
     multiselect.querySelectorAll('input[type="checkbox"]').forEach((input) => {
       input.addEventListener("change", () => {
-        if (isSingleSelect && input.checked) {
-          multiselect.querySelectorAll('input[type="checkbox"]').forEach((otherInput) => {
-            if (otherInput !== input) {
-              otherInput.checked = false;
-            }
-          });
-        }
-
         updateLabel(multiselect);
       });
     });
